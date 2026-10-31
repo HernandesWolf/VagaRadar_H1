@@ -4,7 +4,7 @@
 
 **Seu radar de oportunidades: organize a busca por emprego e descubra _o que falta aprender_ para cada vaga.**
 
-[![CI](https://github.com/HernandesWolf/vagaradar/actions/workflows/ci.yml/badge.svg)](https://github.com/HernandesWolf/vagaradar/actions/workflows/ci.yml)
+[![CI](https://github.com/HernandesWolf/VagaRadar_H1/actions/workflows/ci.yml/badge.svg)](https://github.com/HernandesWolf/VagaRadar_H1/actions/workflows/ci.yml)
 ![Java](https://img.shields.io/badge/Java-17-orange?logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3-6DB33F?logo=springboot&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
@@ -97,8 +97,8 @@ Cole a descrição da vaga em `POST /api/jobs/extract-requirements` e receba **s
 ### Opção 1: Docker (API + PostgreSQL)
 
 ```bash
-git clone https://github.com/HernandesWolf/vagaradar.git
-cd vagaradar
+git clone https://github.com/HernandesWolf/VagaRadar_H1.git
+cd VagaRadar_H1
 docker compose up --build
 ```
 
@@ -139,6 +139,16 @@ Depois, abra:
 | **Estatísticas** | Funil (enviadas → respostas → entrevistas → propostas), taxas de resposta/entrevista/proposta, distribuição por status e modalidade, tecnologias mais pedidas |
 | **Filtros** | Texto livre, **tecnologia** (várias, com AND), **localidade**, **modalidade**, salário mínimo; ordenação por whitelist e paginação |
 | **Análise de lacunas** | Score por vaga, ranking e prioridades de estudo (seção acima) |
+
+### Escopo e limitações da versão atual
+
+O VagaRadar está em evolução e, nesta versão, foi desenvolvido como uma aplicação de uso individual para demonstração e aprendizado de arquitetura backend.
+
+- **Não possui autenticação ou autorização**: os endpoints não exigem login.
+- **Não possui isolamento entre usuários**: os dados pertencem a uma única instância da aplicação.
+- **Não deve ser exposto diretamente à internet nem receber dados pessoais ou sensíveis** sem a implementação prévia de controles de segurança.
+
+Autenticação com Spring Security/JWT e suporte multiusuário estão registrados no roadmap.
 
 ### Máquina de estados da candidatura
 

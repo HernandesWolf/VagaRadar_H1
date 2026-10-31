@@ -29,7 +29,8 @@ services:
       DB_PASSWORD: vagaradar
       VAGARADAR_DEMO_DATA: "true"
     ports:
-      - "8080:8080"
+      # A API não autenticada fica acessível somente na máquina local.
+      - "127.0.0.1:8080:8080"
 
 volumes:
   pgdata:

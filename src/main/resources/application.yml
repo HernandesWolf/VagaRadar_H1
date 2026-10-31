@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: vagaradar
+  datasource:
+    # Banco em arquivo (persiste entre execuções), zero configuração.
+    url: jdbc:h2:file:./data/vagaradar;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+    username: sa
+    password: ""
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none          # o esquema é responsabilidade do Flyway
+  flyway:
+    enabled: true
+  jackson:
+    default-property-inclusion: always
+
+server:
+  port: 8080
+  error:
+    include-message: always
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+
+vagaradar:
+  demo-data: false            # true => popula dados de demonstração se o banco estiver vazio
+  alerts:
+    default-window-days: 7    # janela padrão dos alertas de prazo
+    stale-days: 14            # candidatura sem resposta há N dias gera alerta de follow-up

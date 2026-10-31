@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "VagaRadar (vazio)",
+      "request": "launch",
+      "mainClass": "com.vagaradar.VagaRadarApplication",
+      "projectName": "vagaradar"
+    },
+    {
+      "type": "java",
+      "name": "VagaRadar (com dados de demonstração)",
+      "request": "launch",
+      "mainClass": "com.vagaradar.VagaRadarApplication",
+      "projectName": "vagaradar",
+      "args": "--spring.profiles.active=demo"
+    }
+  ]
+}

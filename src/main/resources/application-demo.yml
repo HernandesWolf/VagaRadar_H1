@@ -1,0 +1,7 @@
+# Perfil de demonstração: banco H2 separado + dados fictícios.
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/vagaradar-demo;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+
+vagaradar:
+  demo-data: true

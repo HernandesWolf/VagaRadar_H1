@@ -1,0 +1,93 @@
+### Exemplos de requisições para a extensão "REST Client" do VS Code (humao.rest-client).
+### Clique em "Send Request" acima de cada bloco. A API precisa estar rodando em localhost:8080.
+### Dica: rode com o perfil "demo" para já ter dados de exemplo.
+
+@host = http://localhost:8080
+
+### 1) Declarar competências (apelidos como "postgres" são normalizados para "PostgreSQL")
+POST {{host}}/api/skills
+Content-Type: application/json
+
+{ "name": "postgres", "level": "BEGINNER" }
+
+###
+POST {{host}}/api/skills
+Content-Type: application/json
+
+{ "name": "java", "level": "INTERMEDIATE" }
+
+### 2) Colar a descrição de uma vaga e receber SUGESTÕES de requisitos (regras, sem IA)
+POST {{host}}/api/jobs/extract-requirements
+Content-Type: application/json
+
+{
+  "description": "Requisitos: Java 17 e Spring Boot. Noções de Docker.\nDiferenciais: Kafka e AWS."
+}
+
+### 3) Cadastrar a vaga (já com os requisitos revisados)
+POST {{host}}/api/jobs
+Content-Type: application/json
+
+{
+  "title": "Desenvolvedor Java Júnior",
+  "company": "Empresa Exemplo",
+  "location": "Fortaleza, CE",
+  "workMode": "HYBRID",
+  "salaryMin": 4000,
+  "salaryMax": 5500,
+  "sourceUrl": "https://exemplo.com/vagas/123",
+  "deadline": "2026-12-15",
+  "requirements": [
+    { "name": "Java",        "mandatory": true,  "minLevel": "INTERMEDIATE" },
+    { "name": "Spring Boot", "mandatory": true,  "minLevel": "BEGINNER" },
+    { "name": "Docker",      "mandatory": false, "minLevel": "BEGINNER" }
+  ]
+}
+
+### 4) Buscar vagas com filtros combinados (tecnologia + modalidade + localidade)
+GET {{host}}/api/jobs?technology=java&technology=postgres&workMode=REMOTE&location=fortaleza&sortBy=deadline&direction=asc
+
+### 5) Análise de lacunas de uma vaga (troque o id)
+GET {{host}}/api/jobs/1/gap-analysis
+
+### 6) Ranking de vagas pela aderência ao seu perfil
+GET {{host}}/api/gap-analysis/ranking
+
+### 7) O que estudar primeiro
+GET {{host}}/api/gap-analysis/study-priorities
+
+### 8) Candidatar-se a uma vaga (status inicial: APPLIED ou WISHLIST)
+POST {{host}}/api/applications
+Content-Type: application/json
+
+{ "jobId": 1, "followUpDate": "2026-11-20", "notes": "Candidatura pelo LinkedIn" }
+
+### 9) Avançar o status (transições inválidas retornam 409)
+POST {{host}}/api/applications/1/status
+Content-Type: application/json
+
+{ "status": "SCREENING", "note": "RH entrou em contato" }
+
+### 10) Registrar etapa, entrevista e contato
+POST {{host}}/api/applications/1/stages
+Content-Type: application/json
+
+{ "stageType": "TECHNICAL_TEST", "title": "Desafio de API REST", "dueDate": "2026-11-10" }
+
+###
+POST {{host}}/api/applications/1/interviews
+Content-Type: application/json
+
+{ "interviewType": "TECHNICAL", "scheduledAt": "2026-11-12T14:00", "interviewer": "Time de Engenharia", "location": "Google Meet" }
+
+###
+POST {{host}}/api/applications/1/contacts
+Content-Type: application/json
+
+{ "name": "Ana Souza", "jobRole": "Recrutadora", "email": "ana@exemplo.com" }
+
+### 11) Painel: estatísticas e alertas
+GET {{host}}/api/stats
+
+###
+GET {{host}}/api/alerts?days=14

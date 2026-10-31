@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:vagaradar}
+    username: ${DB_USER:vagaradar}
+    password: ${DB_PASSWORD:vagaradar}

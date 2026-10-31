@@ -1,0 +1,35 @@
+# Sobe a API + PostgreSQL:   docker compose up --build
+# API:        http://localhost:8080/swagger-ui.html
+# Para começar sem dados de demonstração, troque VAGARADAR_DEMO_DATA para "false".
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: vagaradar
+      POSTGRES_USER: vagaradar
+      POSTGRES_PASSWORD: vagaradar
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vagaradar -d vagaradar"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      DB_HOST: db
+      DB_NAME: vagaradar
+      DB_USER: vagaradar
+      DB_PASSWORD: vagaradar
+      VAGARADAR_DEMO_DATA: "true"
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:

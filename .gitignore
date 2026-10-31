@@ -1,0 +1,29 @@
+# Build
+target/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+# Dados locais do banco H2 (arquivo)
+data/
+*.mv.db
+*.trace.db
+
+# IDEs
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.factorypath
+bin/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+
+# SO / logs / segredos
+.DS_Store
+Thumbs.db
+*.log
+.env

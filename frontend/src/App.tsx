@@ -123,7 +123,7 @@ function App() {
       <div className="content">
         {error&&<div className="error-banner"><AlertCircle size={18}/><div><b>Não foi possível carregar os dados</b><p>{error}. Confirme se o backend está ativo em localhost:8080.</p></div><button onClick={()=>void refresh()}>Tentar novamente</button></div>}
         {loading&&<div className="loading-line"><LoaderCircle className="spin" size={18}/> Sincronizando com a API...</div>}
-        {section==='overview'&&<Overview stats={stats} alerts={alerts} ranking={ranking} jobs={jobs} applications={applications} onNavigate={setSection}/>}
+        {section==='overview'&&<Overview stats={stats} alerts={alerts} ranking={ranking} jobs={jobs} onNavigate={setSection}/>}
         {section==='jobs'&&<Jobs jobs={filteredJobs} query={query} setQuery={setQuery} mode={mode} setMode={setMode} onAdd={()=>openModal('job')} onRefresh={()=>void refresh()} onApply={createApplication}/>}
         {section==='applications'&&<Applications applications={applications} onChange={changeStatus}/>}
         {section==='skills'&&<Skills skills={skills} onAdd={()=>openModal('skill')} onDelete={deleteSkill}/>}
@@ -139,7 +139,7 @@ function App() {
 function SectionHeading({eyebrow,title,description,action}:{eyebrow:string;title:string;description:string;action?:React.ReactNode}) {
   return <div className="section-heading"><div><div className="eyebrow">{eyebrow}</div><h1>{title}</h1><p>{description}</p></div>{action}</div>
 }
-function Overview({stats,alerts,ranking,jobs,applications,onNavigate}:{stats:Stats|null;alerts:Alert[];ranking:Ranking[];jobs:Job[];applications:Application[];onNavigate:(s:string)=>void}) {
+function Overview({stats,alerts,ranking,jobs,onNavigate}:{stats:Stats|null;alerts:Alert[];ranking:Ranking[];jobs:Job[];onNavigate:(s:string)=>void}) {
   const cards=[
     {label:'Oportunidades mapeadas',value:stats?.totalJobs??jobs.length,icon:BriefcaseBusiness,tone:'blue',hint:'Vagas no seu radar'},
     {label:'Candidaturas ativas',value:stats?.activeApplications??0,icon:Send,tone:'violet',hint:'Processos em andamento'},

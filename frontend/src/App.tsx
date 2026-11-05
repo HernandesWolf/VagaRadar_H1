@@ -89,6 +89,10 @@ function App() {
     catch(e){setToast(e instanceof Error?e.message:'Falha ao salvar competência.')}
     finally{setSaving(false)}
   }
+  const createApplication = async(jobId:number) => {
+    try { await api('/api/applications',{method:'POST',body:JSON.stringify({jobId,status:'APPLIED',appliedAt:new Date().toISOString().slice(0,10)})}); setToast('Candidatura iniciada.'); await refresh() }
+    catch(e){setToast(e instanceof Error?e.message:'Falha ao iniciar candidatura.')}
+  }
   const createJob = async(data:Record<string,unknown>) => {
     setSaving(true)
     try { await api('/api/jobs',{method:'POST',body:JSON.stringify(data)}); setModal(null); setToast('Oportunidade cadastrada.'); await refresh() }
@@ -120,7 +124,7 @@ function App() {
         {error&&<div className="error-banner"><AlertCircle size={18}/><div><b>Não foi possível carregar os dados</b><p>{error}. Confirme se o backend está ativo em localhost:8080.</p></div><button onClick={()=>void refresh()}>Tentar novamente</button></div>}
         {loading&&<div className="loading-line"><LoaderCircle className="spin" size={18}/> Sincronizando com a API...</div>}
         {section==='overview'&&<Overview stats={stats} alerts={alerts} ranking={ranking} jobs={jobs} applications={applications} onNavigate={setSection}/>}
-        {section==='jobs'&&<Jobs jobs={filteredJobs} query={query} setQuery={setQuery} mode={mode} setMode={setMode} onAdd={()=>openModal('job')} onRefresh={()=>void refresh()}/>}
+        {section==='jobs'&&<Jobs jobs={filteredJobs} query={query} setQuery={setQuery} mode={mode} setMode={setMode} onAdd={()=>openModal('job')} onRefresh={()=>void refresh()} onApply={createApplication}/>}
         {section==='applications'&&<Applications applications={applications} onChange={changeStatus}/>}
         {section==='skills'&&<Skills skills={skills} onAdd={()=>openModal('skill')} onDelete={deleteSkill}/>}
         {section==='insights'&&<Insights ranking={ranking} skills={skills}/>}
@@ -163,10 +167,10 @@ function Overview({stats,alerts,ranking,jobs,applications,onNavigate}:{stats:Sta
     </div>
   </>
 }
-function Jobs({jobs,query,setQuery,mode,setMode,onAdd,onRefresh}:{jobs:Job[];query:string;setQuery:(s:string)=>void;mode:string;setMode:(s:string)=>void;onAdd:()=>void;onRefresh:()=>void}) {
+function Jobs({jobs,query,setQuery,mode,setMode,onAdd,onRefresh,onApply}:{jobs:Job[];query:string;setQuery:(s:string)=>void;mode:string;setMode:(s:string)=>void;onAdd:()=>void;onRefresh:()=>void;onApply:(jobId:number)=>void}) {
   return <><SectionHeading eyebrow="GESTÃO DE OPORTUNIDADES" title="Seu radar de vagas." description="Centralize oportunidades, compare requisitos e mantenha cada prazo sob controle." action={<button className="btn-primary" onClick={onAdd}><Plus size={17}/> Adicionar vaga</button>}/>
     <div className="toolbar"><div className="search-box"><Search size={17}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Buscar cargo, empresa ou tecnologia..."/></div><div className="select-wrap"><Filter size={15}/><select value={mode} onChange={e=>setMode(e.target.value)}><option value="">Todas as modalidades</option><option value="REMOTE">Remoto</option><option value="HYBRID">Híbrido</option><option value="ONSITE">Presencial</option></select></div><button className="btn-quiet" onClick={onRefresh}><RefreshCw size={16}/></button></div>
-    <div className="panel table-panel"><div className="table-top"><b>{jobs.length} oportunidades</b><span>Dados sincronizados com seu backend</span></div>{jobs.length===0?<div className="empty-state"><div className="empty-icon"><BriefcaseBusiness size={22}/></div><b>Nenhuma oportunidade encontrada</b><p>Adicione sua primeira vaga ou ajuste os filtros.</p><button className="btn-primary" onClick={onAdd}><Plus size={16}/> Cadastrar vaga</button></div>:<div className="table-scroll"><table><thead><tr><th>OPORTUNIDADE</th><th>MODALIDADE</th><th>FAIXA SALARIAL</th><th>PRAZO</th><th>STATUS</th></tr></thead><tbody>{jobs.map(j=><tr key={j.id}><td><div className="job-cell"><div className="company-icon"><Building2 size={17}/></div><div><b>{j.title}</b><small>{j.company}{j.location? ` · ${j.location}`:''}</small><div className="tag-list">{(j.technologies||[]).slice(0,3).map(t=><span key={t}>{t}</span>)}</div></div></div></td><td><span className="mode-badge">{modeLabel[j.workMode]}</span></td><td className="salary-cell">{j.salaryMin||j.salaryMax?money(j.salaryMin)+' – '+money(j.salaryMax):'A combinar'}</td><td>{date(j.deadline)}</td><td><span className={`status-badge ${(j.applicationStatus||'WISHLIST').toLowerCase()}`}>{statusLabel[j.applicationStatus||'WISHLIST']}</span></td></tr>)}</tbody></table></div>}</div>
+    <div className="panel table-panel"><div className="table-top"><b>{jobs.length} oportunidades</b><span>Dados sincronizados com seu backend</span></div>{jobs.length===0?<div className="empty-state"><div className="empty-icon"><BriefcaseBusiness size={22}/></div><b>Nenhuma oportunidade encontrada</b><p>Adicione sua primeira vaga ou ajuste os filtros.</p><button className="btn-primary" onClick={onAdd}><Plus size={16}/> Cadastrar vaga</button></div>:<div className="table-scroll"><table><thead><tr><th>OPORTUNIDADE</th><th>MODALIDADE</th><th>FAIXA SALARIAL</th><th>PRAZO</th><th>STATUS</th><th>AÇÃO</th></tr></thead><tbody>{jobs.map(j=><tr key={j.id}><td><div className="job-cell"><div className="company-icon"><Building2 size={17}/></div><div><b>{j.title}</b><small>{j.company}{j.location? ` · ${j.location}`:''}</small><div className="tag-list">{(j.technologies||[]).slice(0,3).map(t=><span key={t}>{t}</span>)}</div></div></div></td><td><span className="mode-badge">{modeLabel[j.workMode]}</span></td><td className="salary-cell">{j.salaryMin||j.salaryMax?money(j.salaryMin)+' – '+money(j.salaryMax):'A combinar'}</td><td>{date(j.deadline)}</td><td><span className={`status-badge ${(j.applicationStatus||'WISHLIST').toLowerCase()}`} >{statusLabel[j.applicationStatus||'WISHLIST']}</span></td><td>{j.applicationStatus?<span className="already-tracking">Em acompanhamento</span>:<button className="table-action" onClick={()=>onApply(j.id)}><Send size={13}/> Candidatar-se</button>}</td></tr>)}</tbody></table></div>}</div>
   </>
 }
 function Applications({applications,onChange}:{applications:Application[];onChange:(a:Application,s:Status)=>void}) {

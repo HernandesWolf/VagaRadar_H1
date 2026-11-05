@@ -2,6 +2,8 @@
 
 # 📡 VagaRadar
 
+![VagaRadar — Career Intelligence](docs/vagaradar-banner.svg)
+
 **Seu radar de oportunidades: organize a busca por emprego e descubra _o que falta aprender_ para cada vaga.**
 
 [![CI](https://github.com/HernandesWolf/VagaRadar_H1/actions/workflows/ci.yml/badge.svg)](https://github.com/HernandesWolf/VagaRadar_H1/actions/workflows/ci.yml)

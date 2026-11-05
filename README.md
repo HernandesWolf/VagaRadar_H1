@@ -136,8 +136,8 @@ Acesse **http://localhost:8080**. O Spring Boot entrega a interface e a API na m
 A interface é propositalmente enxuta: **HTML5, CSS3 e JavaScript puro**, localizada em `src/main/resources/static` e servida pelo Spring Boot. O foco técnico do projeto permanece no backend Java/Spring Boot.
 
 - Painel com indicadores, funil e alertas reais da API.
-- Consulta e cadastro de vagas.
-- Registro e acompanhamento de candidaturas, respeitando as transições de status definidas no backend.
+- Consulta, cadastro, edição e exclusão de vagas.
+- Registro, edição do acompanhamento e exclusão de candidaturas, respeitando as transições de status definidas no backend.
 - Análise de aderência e lacunas por oportunidade.
 - Cadastro e manutenção de competências.
 - Layout responsivo para desktop e celular.
@@ -327,7 +327,8 @@ mvn verify      # o mesmo que o CI executa a cada push
 - [ ] Autenticação (Spring Security + JWT) e multiusuário
 - [ ] Testes com Testcontainers (PostgreSQL real) no CI
 - [x] Interface web leve (HTML/CSS/JavaScript) servida pelo Spring Boot
-- [ ] Edição e exclusão de oportunidades pela interface
+- [x] Edição e exclusão de oportunidades pela interface
+- [x] Edição de follow-up/anotações e exclusão de candidaturas pela interface
 - [ ] Detalhamento completo de candidaturas (etapas, entrevistas e contatos)
 - [ ] Autenticação e autorização antes de disponibilizar o produto publicamente
 - [ ] Notificações de alertas por e-mail

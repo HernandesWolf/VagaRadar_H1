@@ -12,7 +12,7 @@
 ![OpenAPI](https://img.shields.io/badge/OpenAPI-Swagger%20UI-85EA2D?logo=swagger&logoColor=black)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-[O problema](#-o-problema) · [O diferencial](#-o-diferencial-análise-de-lacunas) · [Teste em 2 minutos](#-teste-em-2-minutos) · [Arquitetura](#-arquitetura) · [API](#-api) · [Testes](#-testes) · [Roadmap](#-roadmap)
+[Demonstração](#-frontend) · [O problema](#-o-problema) · [O diferencial](#-o-diferencial-análise-de-lacunas) · [Teste em 2 minutos](#-teste-em-2-minutos) · [Arquitetura](#-arquitetura) · [API](#-api) · [Testes](#-testes) · [Roadmap](#-roadmap)
 
 </div>
 
@@ -102,7 +102,7 @@ cd VagaRadar_H1
 docker compose up --build
 ```
 
-### Opção 2: Maven (zero configuração, usa H2 em arquivo)
+### Opção 2: Frontend React + Vite\n\nCom a API em execução na porta `8080`, abra outro terminal:\n\n```bash\ncd frontend\nnpm install\nnpm run dev\n```\n\nAcesse **http://localhost:5173**. O Vite encaminha automaticamente as chamadas `/api` para `http://localhost:8080`.\n\n### Opção 3: Maven (zero configuração, usa H2 em arquivo)
 
 Requer **JDK 17+** e **Maven 3.9+**.
 
@@ -126,7 +126,7 @@ Depois, abra:
 
 > 💡 **VS Code:** o repositório já traz `.vscode/launch.json`. Instale o _Extension Pack for Java_ (o VS Code sugere sozinho), abra a pasta e use **Run and Debug → "VagaRadar (com dados de demonstração)"**. O arquivo [`docs/api-examples.http`](docs/api-examples.http) tem uma requisição pronta para cada funcionalidade (extensão _REST Client_).
 
-## 🧩 Funcionalidades
+## 🖥️ Frontend\n\nO projeto inclui uma aplicação web em **React 18 + TypeScript + Vite**, integrada à API REST existente. A interface oferece:\n\n- Dashboard com indicadores, funil de candidaturas, alertas e oportunidades com maior aderência.\n- Cadastro e consulta de vagas, com filtros por texto e modalidade.\n- Gestão de competências e níveis de domínio.\n- Acompanhamento de candidaturas e atualização de status respeitando as transições permitidas pelo backend.\n- Ranking de aderência e visualização das lacunas obrigatórias por oportunidade.\n- Layout responsivo para desktop e dispositivos móveis.\n\n**Executar localmente:** inicie a API na porta `8080`, depois execute `cd frontend`, `npm install` e `npm run dev`. O endereço padrão do frontend é `http://localhost:5173`. Para gerar os arquivos de produção, execute `npm run build`; a saída fica em `frontend/dist`.\n\n> **Atenção:** o backend atual é de uso individual e ainda não possui autenticação/autorização. O frontend não adiciona controle de acesso. Mantenha a aplicação em ambiente local ou protegido até implementar segurança no backend.\n\n## 🧩 Funcionalidades
 
 | Funcionalidade | Como funciona |
 |---|---|
@@ -306,11 +306,11 @@ mvn verify      # o mesmo que o CI executa a cada push
 - [ ] **Camada de LLM opcional** (resumir a descrição da vaga e categorizar requisitos), sempre como _sugestão revisável_, reaproveitando a interface do `RequirementExtractor`
 - [ ] Autenticação (Spring Security + JWT) e multiusuário
 - [ ] Testes com Testcontainers (PostgreSQL real) no CI
-- [ ] Front-end (React + TypeScript) consumindo a API
+- [x] Front-end React + TypeScript consumindo a API (primeira versão funcional)\n- [ ] Edição e exclusão de oportunidades pela interface\n- [ ] Detalhamento completo de candidaturas (etapas, entrevistas e contatos)\n- [ ] Autenticação e autorização antes de disponibilizar o produto publicamente
 - [ ] Notificações de alertas por e-mail
 - [ ] Importação de vagas por link
 
-## 🇺🇸 In short (English)
+## 🧰 Stack do frontend\n\n| Tecnologia | Uso |\n|---|---|\n| React 18 | Interface e componentes |\n| TypeScript | Tipagem estática |\n| Vite | Servidor de desenvolvimento e build |\n| Lucide React | Ícones |\n| CSS responsivo | Tema escuro e adaptação a telas menores |\n\n## 🇺🇸 In short (English)
 
 **VagaRadar** is a Spring Boot 3 / Java 17 REST API for managing a job search: opportunities, applications (with a validated status state machine), selection stages, interviews, contacts, deadline alerts and funnel statistics. Its differentiator is a **deterministic skill-gap engine** (no AI) that scores each job against the user's declared skills, ranks all jobs by fit and suggests what to study first, with a rule-based requirement extractor designed to be swapped or complemented by an LLM later. Persistence uses Flyway-versioned SQL on H2 (zero-config) or PostgreSQL (Docker Compose); the API is documented with OpenAPI/Swagger UI and covered by 35 automated tests.
 

@@ -104,31 +104,49 @@ cd VagaRadar_H1
 docker compose up --build
 ```
 
-### Opção 2: Frontend React + Vite\n\nCom a API em execução na porta `8080`, abra outro terminal:\n\n```bash\ncd frontend\nnpm install\nnpm run dev\n```\n\nAcesse **http://localhost:5173**. O Vite encaminha automaticamente as chamadas `/api` para `http://localhost:8080`.\n\n### Opção 3: Maven (zero configuração, usa H2 em arquivo)
+### Opção 2: Maven + interface web integrada (H2 em arquivo)
 
 Requer **JDK 17+** e **Maven 3.9+**.
 
 ```bash
-# com dados de demonstração (recomendado para conhecer)
+# Com dados de demonstração
 mvn spring-boot:run -Dspring-boot.run.profiles=demo
 
-# ou vazio
+# Ou banco vazio
 mvn spring-boot:run
 ```
 
-Depois, abra:
+Acesse **http://localhost:8080**. O Spring Boot entrega a interface e a API na mesma origem. Não é necessário Node.js, npm, React, build separado ou configuração de CORS.
+
+### Endpoints úteis
 
 | O quê | Onde |
 |---|---|
-| 📖 Swagger UI (teste os endpoints no navegador) | http://localhost:8080/swagger-ui.html |
-| 🩺 Health check | http://localhost:8080/actuator/health |
-| 🏆 Ranking de aderência | http://localhost:8080/api/gap-analysis/ranking |
-| 📊 Estatísticas | http://localhost:8080/api/stats |
-| 🔔 Alertas | http://localhost:8080/api/alerts |
+| Interface web | http://localhost:8080 |
+| Swagger UI | http://localhost:8080/swagger-ui.html |
+| Health check | http://localhost:8080/actuator/health |
+| Ranking de aderência | http://localhost:8080/api/gap-analysis/ranking |
+| Estatísticas | http://localhost:8080/api/stats |
+| Alertas | http://localhost:8080/api/alerts |
 
-> 💡 **VS Code:** o repositório já traz `.vscode/launch.json`. Instale o _Extension Pack for Java_ (o VS Code sugere sozinho), abra a pasta e use **Run and Debug → "VagaRadar (com dados de demonstração)"**. O arquivo [`docs/api-examples.http`](docs/api-examples.http) tem uma requisição pronta para cada funcionalidade (extensão _REST Client_).
+> **VS Code:** o repositório já traz `.vscode/launch.json`. Instale o _Extension Pack for Java_ e use **Run and Debug → VagaRadar (com dados de demonstração)**. O arquivo [`docs/api-examples.http`](docs/api-examples.http) contém exemplos de chamadas à API.
 
-## 🖥️ Frontend\n\nO projeto inclui uma interface leve em **HTML5, CSS3 e JavaScript puro**, servida pelo próprio Spring Boot em `src/main/resources/static`. Não há framework frontend, etapa de build ou servidor separado. A interface consome a API REST existente e oferece:\n\n- Dashboard com indicadores, funil de candidaturas, alertas e oportunidades com maior aderência.\n- Cadastro e consulta de vagas, com filtros por texto e modalidade.\n- Gestão de competências e níveis de domínio.\n- Acompanhamento de candidaturas e atualização de status respeitando as transições permitidas pelo backend.\n- Ranking de aderência e visualização das lacunas obrigatórias por oportunidade.\n- Layout responsivo para desktop e dispositivos móveis.\n\n**Executar localmente:** execute `mvn spring-boot:run` e acesse `http://localhost:8080`. A mesma aplicação Spring Boot entrega as páginas e os endpoints, sem CORS ou build separado.\n\n> **Atenção:** o backend atual é de uso individual e ainda não possui autenticação/autorização. O frontend não adiciona controle de acesso. Mantenha a aplicação em ambiente local ou protegido até implementar segurança no backend.\n\n## 🧩 Funcionalidades
+## 🖥️ Frontend
+
+A interface é propositalmente enxuta: **HTML5, CSS3 e JavaScript puro**, localizada em `src/main/resources/static` e servida pelo Spring Boot. O foco técnico do projeto permanece no backend Java/Spring Boot.
+
+- Painel com indicadores, funil e alertas reais da API.
+- Consulta e cadastro de vagas.
+- Registro e acompanhamento de candidaturas, respeitando as transições de status definidas no backend.
+- Análise de aderência e lacunas por oportunidade.
+- Cadastro e manutenção de competências.
+- Layout responsivo para desktop e celular.
+
+Não existe um segundo servidor frontend: a página e os endpoints usam a mesma origem (`localhost:8080`).
+
+> **Segurança:** o backend atual ainda não implementa autenticação/autorização. Mantenha a aplicação em ambiente local ou protegido até implementar controle de acesso.
+
+## 🧩 Funcionalidades
 
 | Funcionalidade | Como funciona |
 |---|---|
@@ -312,7 +330,16 @@ mvn verify      # o mesmo que o CI executa a cada push
 - [ ] Notificações de alertas por e-mail
 - [ ] Importação de vagas por link
 
-## 🧰 Stack da interface\n\n| Tecnologia | Uso |\n|---|---|\n| HTML5 | Estrutura das telas |\n| CSS3 | Layout responsivo e identidade visual |\n| JavaScript | Navegação, formulários e consumo da API via Fetch |\n| Spring Boot Static Resources | Entrega da interface na mesma origem da API |\n\n## 🇺🇸 In short (English)
+## 🧰 Stack da interface
+
+| Tecnologia | Uso |
+|---|---|
+| HTML5 | Estrutura das telas |
+| CSS3 | Layout responsivo e identidade visual |
+| JavaScript | Navegação, formulários e consumo da API via Fetch |
+| Spring Boot Static Resources | Entrega da interface na mesma origem da API |
+
+## 🇺🇸 In short (English)
 
 **VagaRadar** is a Spring Boot 3 / Java 17 REST API for managing a job search: opportunities, applications (with a validated status state machine), selection stages, interviews, contacts, deadline alerts and funnel statistics. Its differentiator is a **deterministic skill-gap engine** (no AI) that scores each job against the user's declared skills, ranks all jobs by fit and suggests what to study first, with a rule-based requirement extractor designed to be swapped or complemented by an LLM later. Persistence uses Flyway-versioned SQL on H2 (zero-config) or PostgreSQL (Docker Compose); the API is documented with OpenAPI/Swagger UI and covered by 35 automated tests.
 

@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <meta name="description" content="VagaRadar — organize oportunidades, acompanhe candidaturas e identifique lacunas de competências.">
+  <title>VagaRadar | Painel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="VagaRadar início"><span class="brand-mark">VR</span><span>Vaga<span class="brand-accent">Radar</span><small>CAREER TRACKER</small></span></a>
+      <div class="side-label">ESPAÇO DE TRABALHO</div>
+      <nav id="navigation" aria-label="Navegação principal">
+        <button class="nav-link active" data-view="dashboard"><span>▦</span>Painel</button>
+        <button class="nav-link" data-view="jobs"><span>⌕</span>Vagas</button>
+        <button class="nav-link" data-view="applications"><span>▤</span>Candidaturas</button>
+        <button class="nav-link" data-view="gaps"><span>◈</span>Análise de lacunas</button>
+        <button class="nav-link" data-view="skills"><span>⌘</span>Competências</button>
+      </nav>
+      <div class="sidebar-bottom"><span class="live-dot"></span> API conectada localmente <small>SPRING BOOT · REST</small></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div><span class="eyebrow">GESTÃO DE CARREIRA</span><h1 id="page-title">Painel</h1></div><div class="top-actions"><span class="api-status"><i></i> Sistema local</span><button class="icon-btn" id="refresh" title="Atualizar dados">↻</button></div></header>
+      <div id="notice" class="notice" role="status" aria-live="polite"></div>
+      <section id="view" aria-live="polite"><div class="loading">Carregando dados do VagaRadar…</div></section>
+      <footer>VagaRadar <span>·</span> Java + Spring Boot <span>·</span> Interface demonstrativa conectada à API REST</footer>
+    </main>
+  </div>
+  <dialog id="modal"><form method="dialog" id="modal-form"><div class="modal-head"><div><span class="eyebrow">VAGARADAR</span><h2 id="modal-title">Novo registro</h2></div><button class="icon-btn" value="cancel" aria-label="Fechar">×</button></div><div id="modal-content"></div><div class="modal-actions"><button class="btn btn-quiet" value="cancel">Cancelar</button><button class="btn btn-primary" id="modal-submit" value="default">Salvar</button></div></form></dialog>
+  <script src="/app.js" defer></script>
+</body>
+</html>

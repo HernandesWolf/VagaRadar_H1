@@ -326,7 +326,10 @@ mvn verify      # o mesmo que o CI executa a cada push
 - [ ] **Camada de LLM opcional** (resumir a descrição da vaga e categorizar requisitos), sempre como _sugestão revisável_, reaproveitando a interface do `RequirementExtractor`
 - [ ] Autenticação (Spring Security + JWT) e multiusuário
 - [ ] Testes com Testcontainers (PostgreSQL real) no CI
-- [x] Interface web leve (HTML/CSS/JavaScript) servida pelo Spring Boot\n- [ ] Edição e exclusão de oportunidades pela interface\n- [ ] Detalhamento completo de candidaturas (etapas, entrevistas e contatos)\n- [ ] Autenticação e autorização antes de disponibilizar o produto publicamente
+- [x] Interface web leve (HTML/CSS/JavaScript) servida pelo Spring Boot
+- [ ] Edição e exclusão de oportunidades pela interface
+- [ ] Detalhamento completo de candidaturas (etapas, entrevistas e contatos)
+- [ ] Autenticação e autorização antes de disponibilizar o produto publicamente
 - [ ] Notificações de alertas por e-mail
 - [ ] Importação de vagas por link
 

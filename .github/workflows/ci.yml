@@ -18,7 +18,15 @@ jobs:
           java-version: "17"
           cache: maven
 
-      - name: Configura Node.js para validar o JavaScript da interface\n        uses: actions/setup-node@v4\n        with:\n          node-version: '20'\n\n      - name: Verifica sintaxe do frontend\n        run: node --check src/main/resources/static/app.js\n\n      - name: Compila e roda todos os testes
+      - name: Configura Node.js para validar o JavaScript da interface
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Verifica sintaxe do frontend
+        run: node --check src/main/resources/static/app.js
+
+      - name: Compila e roda todos os testes
         run: mvn -B verify
 
       - name: Publica o relatório dos testes

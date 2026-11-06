@@ -174,6 +174,47 @@ class VagaRadarApiTest {
     }
 
     @Test
+    void atualizaEExcluiCandidaturaSemExcluirAVaga() throws Exception {
+        long jobId = createJob("Dev para candidatura", "REMOTE", "[]");
+        long appId = idOf(postJson("/api/applications", "{\"jobId\":" + jobId + "}")
+                .andExpect(status().isCreated()));
+
+        String appliedAt = java.time.LocalDate.now().minusDays(2).toString();
+        String followUpDate = java.time.LocalDate.now().plusDays(2).toString();
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put("/api/applications/" + appId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"appliedAt":"%s","followUpDate":"%s","notes":"Retorno combinado"}
+                                """.formatted(appliedAt, followUpDate)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.appliedAt").value(appliedAt))
+                .andExpect(jsonPath("$.followUpDate").value(followUpDate))
+                .andExpect(jsonPath("$.notes").value("Retorno combinado"));
+
+        mvc.perform(delete("/api/applications/" + appId)).andExpect(status().isNoContent());
+        mvc.perform(get("/api/applications/" + appId)).andExpect(status().isNotFound());
+        mvc.perform(get("/api/jobs/" + jobId)).andExpect(status().isOk());
+    }
+
+    @Test
+    void atualizaNomeENivelEExcluiCompetencia() throws Exception {
+        long skillId = idOf(postJson("/api/skills",
+                "{\"name\":\"Java\",\"level\":\"BEGINNER\"}")
+                .andExpect(status().isCreated()));
+
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put("/api/skills/" + skillId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"name":"Spring Boot","level":"ADVANCED"}
+                                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Spring Boot"))
+                .andExpect(jsonPath("$.level").value("ADVANCED"));
+
+        mvc.perform(delete("/api/skills/" + skillId)).andExpect(status().isNoContent());
+    }
+
+    @Test
     void excluirVagaRemoveACandidaturaAssociada() throws Exception {
         long jobId = createJob("Dev", "REMOTE", "[]");
         long appId = idOf(postJson("/api/applications", "{\"jobId\":" + jobId + "}").andExpect(status().isCreated()));

@@ -136,8 +136,8 @@ Acesse **http://localhost:8080**. O Spring Boot entrega a interface e a API na m
 A interface é propositalmente enxuta: **HTML5, CSS3 e JavaScript puro**, localizada em `src/main/resources/static` e servida pelo Spring Boot. O foco técnico do projeto permanece no backend Java/Spring Boot.
 
 - Painel com indicadores, funil e alertas reais da API.
-- Consulta, cadastro, edição e exclusão de vagas.
-- Registro, edição do acompanhamento e exclusão de candidaturas, respeitando as transições de status definidas no backend.
+- Consulta paginada (até 100 por página), cadastro, edição completa — inclusive requisitos — e exclusão de vagas.
+- Registro, edição de datas/anotações e exclusão de candidaturas; mudanças de status respeitam as transições definidas no backend.
 - Análise de aderência e lacunas por oportunidade.
 - Cadastro e manutenção de competências.
 - Layout responsivo para desktop e celular.
@@ -151,7 +151,7 @@ Não existe um segundo servidor frontend: a página e os endpoints usam a mesma 
 | Funcionalidade | Como funciona |
 |---|---|
 | **Cadastro de oportunidades** | Empresa, cargo, localidade, modalidade (`REMOTE`/`HYBRID`/`ONSITE`), faixa salarial, link, descrição, prazo e requisitos |
-| **Requisitos por vaga** | Obrigatório ou desejável, com nível mínimo. Atualizar a vaga _sincroniza_ os requisitos por diferença |
+| **Requisitos por vaga** | Obrigatório ou desejável, com nível mínimo. Na interface, use `*` para obrigatório e `[BEGINNER]`, `[INTERMEDIATE]` ou `[ADVANCED]` para o nível mínimo. Atualizar a vaga _sincroniza_ os requisitos por diferença |
 | **Acompanhamento de candidaturas** | Uma por vaga; status controlado por máquina de estados (veja abaixo) |
 | **Etapas do processo seletivo** | Triagem, teste técnico, entrevistas… cada uma com status e prazo |
 | **Entrevistas e contatos** | Data/hora, tipo, entrevistador, local/link, feedback; contatos (recrutador, gestor…) por candidatura |
